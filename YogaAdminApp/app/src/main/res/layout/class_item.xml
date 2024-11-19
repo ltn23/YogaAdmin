@@ -2,15 +2,32 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:background="@android:drawable/editbox_background"
+    android:layout_marginBottom="8dp">
+
     <TextView
         android:id="@+id/txtClassName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="2"/>
+        android:layout_weight="2"
+        android:text="Class Name"
+        android:textSize="16sp"
+        android:gravity="center_vertical" />
+
     <Button
         android:id="@+id/btnEditClass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Edit"/>
+        android:text="Edit"
+        android:layout_marginEnd="8dp" />
+
+    <Button
+        android:id="@+id/btnDeleteClass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete"
+        android:backgroundTint="@android:color/holo_red_dark"
+        android:textColor="@android:color/white" />
 </LinearLayout>

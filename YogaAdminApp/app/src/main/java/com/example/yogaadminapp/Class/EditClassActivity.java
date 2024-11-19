@@ -29,7 +29,7 @@ public class EditClassActivity extends AppCompatActivity {
         edtDate = findViewById(R.id.edtDate);
         edtComments = findViewById(R.id.edtComments);
         btnUpdate = findViewById(R.id.btnUpdateClass);
-        btnDelete = findViewById(R.id.btnDeleteClass);
+
 
         dbHelper = new DatabaseHelper(this);
 
@@ -50,12 +50,7 @@ public class EditClassActivity extends AppCompatActivity {
             }
         });
 
-        // Nút Delete để xóa class
-        btnDelete.setOnClickListener(v -> {
-            deleteClass();
-            Toast.makeText(EditClassActivity.this, "Class deleted successfully", Toast.LENGTH_SHORT).show();
-            finish();
-        });
+
     }
 
     private void populateFields() {

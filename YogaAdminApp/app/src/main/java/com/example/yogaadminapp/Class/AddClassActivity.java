@@ -39,7 +39,7 @@ public class AddClassActivity extends AppCompatActivity {
                 dbHelper.insertClass(newClass);
 
                 Toast.makeText(AddClassActivity.this, "Class added successfully", Toast.LENGTH_SHORT).show();
-                finish();  // Quay lại màn hình ClassListActivity
+                finish();
             }
         });
     }
