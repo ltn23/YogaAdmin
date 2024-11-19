@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Detail Course"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
+
+        <EditText
+            android:id="@+id/edtDay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Day of the week *"
+            android:inputType="text"
+            android:enabled="false"
+            android:layout_marginBottom="12dp" />
+
+        <EditText
+            android:id="@+id/edtTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Time of course *"
+            android:inputType="time"
+            android:enabled="false"
+            android:layout_marginBottom="12dp" />
+
+        <EditText
+            android:id="@+id/edtCapacity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Capacity *"
+            android:inputType="number"
+            android:enabled="false"
+            android:layout_marginBottom="12dp" />
+
+        <EditText
+            android:id="@+id/edtDuration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Duration *"
+            android:inputType="number"
+            android:enabled="false"
+            android:layout_marginBottom="12dp" />
+
+        <EditText
+            android:id="@+id/edtPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Price per class *"
+            android:inputType="numberDecimal"
+            android:enabled="false"
+            android:layout_marginBottom="12dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Type of class *"
+            android:layout_marginBottom="8dp" />
+
+        <RadioGroup
+            android:id="@+id/rgType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp"
+            android:enabled="false">
+
+            <RadioButton
+                android:id="@+id/rbFlowYoga"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Flow Yoga"
+                android:enabled="false" />
+
+            <RadioButton
+                android:id="@+id/rbAerialYoga"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Aerial Yoga"
+                android:enabled="false" />
+
+            <RadioButton
+                android:id="@+id/rbFamilyYoga"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Family Yoga"
+                android:enabled="false" />
+        </RadioGroup>
+
+        <EditText
+            android:id="@+id/edtDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Description (Optional)"
+            android:enabled="false"
+            android:layout_marginBottom="16dp" />
+
+        <Button
+            android:id="@+id/btnEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Edit"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/btnUpdate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Update"
+            android:textStyle="bold"
+            android:visibility="gone" />
+    </LinearLayout>
+</ScrollView>
