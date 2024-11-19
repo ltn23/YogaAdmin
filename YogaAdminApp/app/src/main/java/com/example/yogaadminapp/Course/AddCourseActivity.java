@@ -1,5 +1,6 @@
 package com.example.yogaadminapp.Course;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,13 +11,14 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.yogaadminapp.DatabaseHelper;
+import com.example.yogaadminapp.MainActivity;
 import com.example.yogaadminapp.R;
 
 public class AddCourseActivity extends AppCompatActivity {
 
     EditText edtDay, edtTime, edtCapacity, edtDuration, edtPrice, edtDescription;
     RadioGroup rgType;
-    Button btnSave;
+    Button btnSave, btnHome, btnAdd;
     DatabaseHelper dbHelper;
 
     @Override
@@ -33,8 +35,12 @@ public class AddCourseActivity extends AppCompatActivity {
         edtDescription = findViewById(R.id.edtDescription);
         rgType = findViewById(R.id.rgType);
         btnSave = findViewById(R.id.btnSave);
+        btnHome = findViewById(R.id.btnHome);
+        btnAdd = findViewById(R.id.btnAdd);
+
         dbHelper = new DatabaseHelper(this);
 
+        // Sự kiện khi nhấn nút Save để thêm lớp học
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,7 +58,6 @@ public class AddCourseActivity extends AppCompatActivity {
                     RadioButton selectedTypeButton = findViewById(selectedTypeId);
                     String type = selectedTypeButton.getText().toString();
 
-
                     YogaCourse newCourse = new YogaCourse(day, time, capacity, duration, price, type, description);
                     dbHelper.insertCourse(newCourse);
 
@@ -60,6 +65,18 @@ public class AddCourseActivity extends AppCompatActivity {
                     finish(); // Quay về màn hình trước đó
                 }
             }
+        });
+
+        // Sự kiện khi nhấn nút Home để quay lại trang chính
+        btnHome.setOnClickListener(v -> {
+            Intent intent = new Intent(AddCourseActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        });
+
+        // Sự kiện khi nhấn nút Add để ở lại trang hiện tại
+        btnAdd.setOnClickListener(v -> {
+            Toast.makeText(AddCourseActivity.this, "You're already on Add Course page", Toast.LENGTH_SHORT).show();
         });
     }
 

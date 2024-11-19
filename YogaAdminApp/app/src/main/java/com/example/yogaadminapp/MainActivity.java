@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
-    Button btnAddCourse, btnDeleteAll;
+    Button btnHome, btnAddCourse;
     DatabaseHelper dbHelper;
     RecyclerViewAdapter adapter;
     ArrayList<YogaCourse> courseList;
@@ -30,8 +30,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         recyclerView = findViewById(R.id.recyclerView);
-        btnAddCourse = findViewById(R.id.btnAddCourse);
-        btnDeleteAll = findViewById(R.id.btnDeleteAll);
+        btnHome = findViewById(R.id.btnHome);
+        btnAddCourse = findViewById(R.id.btnAdd);
         txtNoData = findViewById(R.id.txtNoData);
         dbHelper = new DatabaseHelper(this);
 
@@ -45,12 +45,8 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        btnDeleteAll.setOnClickListener(v -> {
-            dbHelper.deleteAllCourses();
-            courseList.clear();
-            adapter.notifyDataSetChanged();
-            Toast.makeText(MainActivity.this, "All courses deleted", Toast.LENGTH_SHORT).show();
-            checkNoData();
+        btnHome.setOnClickListener(v -> {
+            Toast.makeText(this, "Already on Home Screen", Toast.LENGTH_SHORT).show();
         });
 
         loadCourses();
