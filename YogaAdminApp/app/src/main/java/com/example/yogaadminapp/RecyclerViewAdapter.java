@@ -41,8 +41,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         YogaCourse yogaCourse = courseList.get(position);
         holder.txtCourseName.setText(yogaCourse.getDay() + " - " + yogaCourse.getTime());
 
-        // Xử lý nút "More" để xem chi tiết
-        holder.btnMore.setOnClickListener(v -> {
+//        // Xử lý nút "More" để xem chi tiết
+//        holder.btnMore.setOnClickListener(v -> {
+//            Intent intent = new Intent(context, DetailCourseActivity.class);
+//            intent.putExtra("course", yogaCourse);  // Truyền đối tượng lớp học qua Intent
+//            context.startActivity(intent);
+//        });
+
+        // Sự kiện khi nhấn vào toàn bộ item
+        holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, DetailCourseActivity.class);
             intent.putExtra("course", yogaCourse);  // Truyền đối tượng lớp học qua Intent
             context.startActivity(intent);

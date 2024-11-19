@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,6 +41,22 @@ public class MainActivity extends AppCompatActivity {
         adapter = new RecyclerViewAdapter(this, courseList, dbHelper);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        Button btnDeleteAll = findViewById(R.id.btnDeleteAll);
+        btnDeleteAll.setOnClickListener(v -> {
+            new AlertDialog.Builder(this)
+                    .setTitle("Delete All Courses")
+                    .setMessage("Are you sure you want to delete all courses?")
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        dbHelper.deleteAllCourses();
+                        courseList.clear();
+                        adapter.notifyDataSetChanged();
+                        checkNoData();
+                        Toast.makeText(this, "All courses deleted", Toast.LENGTH_SHORT).show();
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+        });
+
 
         btnAddCourse.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, AddCourseActivity.class);
