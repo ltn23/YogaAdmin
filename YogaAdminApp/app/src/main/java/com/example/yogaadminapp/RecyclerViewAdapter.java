@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import android.widget.Toast;
 
+import com.example.yogaadminapp.Class.ClassListActivity;
 import com.example.yogaadminapp.Course.DetailCourseActivity;
 import com.example.yogaadminapp.Course.YogaCourse;
 
@@ -41,12 +42,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         YogaCourse yogaCourse = courseList.get(position);
         holder.txtCourseName.setText(yogaCourse.getDay() + " - " + yogaCourse.getTime());
 
-//        // Xử lý nút "More" để xem chi tiết
-//        holder.btnMore.setOnClickListener(v -> {
-//            Intent intent = new Intent(context, DetailCourseActivity.class);
-//            intent.putExtra("course", yogaCourse);  // Truyền đối tượng lớp học qua Intent
-//            context.startActivity(intent);
-//        });
+        holder.btnMore.setOnClickListener(v -> {
+            Intent intent = new Intent(context, ClassListActivity.class);
+            intent.putExtra("courseId", yogaCourse.getId()); // Ensure yogaCourse.getId() is not null
+            context.startActivity(intent);
+        });
+
 
         // Sự kiện khi nhấn vào toàn bộ item
         holder.itemView.setOnClickListener(v -> {

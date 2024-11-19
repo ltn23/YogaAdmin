@@ -2,7 +2,7 @@ package com.example.yogaadminapp.Course;
 
 import java.io.Serializable;
 
-public class YogaCourse implements Serializable { // Triển khai Serializable
+public class YogaCourse implements Serializable {
     private int id;
     private String day;
     private String time;
