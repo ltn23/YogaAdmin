@@ -1,11 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="8dp"
-    android:background="@android:drawable/editbox_background"
-    android:layout_marginBottom="8dp">
+    android:padding="12dp"
+    android:background="@android:color/white"
+    android:elevation="4dp"
+    android:layout_marginBottom="8dp"
+    android:layout_marginHorizontal="8dp"
+    android:gravity="center_vertical"
+    android:divider="?android:attr/dividerVertical"
+    android:showDividers="middle">
 
     <TextView
         android:id="@+id/txtClassName"
@@ -14,6 +18,8 @@
         android:layout_weight="2"
         android:text="Class Name"
         android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
         android:gravity="center_vertical" />
 
     <Button
@@ -21,7 +27,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Edit"
-        android:layout_marginEnd="8dp" />
+        android:layout_marginEnd="8dp"
+        android:backgroundTint="@android:color/holo_blue_dark"
+        android:textColor="@android:color/white"
+        android:drawableStart="@android:drawable/ic_menu_edit"
+        android:drawablePadding="8dp"
+        android:padding="8dp" />
 
     <Button
         android:id="@+id/btnDeleteClass"
@@ -29,5 +40,8 @@
         android:layout_height="wrap_content"
         android:text="Delete"
         android:backgroundTint="@android:color/holo_red_dark"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/white"
+        android:drawableStart="@android:drawable/ic_delete"
+        android:drawablePadding="8dp"
+        android:padding="8dp" />
 </LinearLayout>
