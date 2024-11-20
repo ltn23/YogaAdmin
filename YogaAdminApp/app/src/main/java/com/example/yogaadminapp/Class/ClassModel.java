@@ -7,10 +7,13 @@ public class ClassModel implements Serializable {
     private String teacher;
     private String date;
     private String comments;
+    private String name;
     private int courseId; // Liên kết với Course
 
-    public ClassModel(int id, String teacher, String date, String comments, int courseId) {
+
+    public ClassModel(int id, String name, String teacher, String date, String comments, int courseId) {
         this.id = id;
+        this.name = name;
         this.teacher = teacher;
         this.date = date;
         this.comments = comments;
@@ -24,6 +27,13 @@ public class ClassModel implements Serializable {
         this.courseId = courseId;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
     public int getId() {
         return id;
     }

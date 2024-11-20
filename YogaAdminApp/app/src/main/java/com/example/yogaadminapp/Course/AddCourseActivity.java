@@ -20,7 +20,7 @@ import java.util.HashMap;
 
 public class AddCourseActivity extends AppCompatActivity {
 
-    EditText edtDay, edtTime, edtCapacity, edtDuration, edtPrice, edtDescription;
+    EditText edtDay, edtTime, edtCapacity, edtDuration, edtPrice, edtDescription, edtCourseName;
     RadioGroup rgType;
     DatabaseHelper dbHelper;
     HashMap<Integer, Runnable> menuActions;
@@ -31,6 +31,7 @@ public class AddCourseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_course);
 
         // Ánh xạ các thành phần từ giao diện
+        edtCourseName = findViewById(R.id.edtCourseName);
         edtDay = findViewById(R.id.edtDay);
         edtTime = findViewById(R.id.edtTime);
         edtCapacity = findViewById(R.id.edtCapacity);
@@ -69,6 +70,7 @@ public class AddCourseActivity extends AppCompatActivity {
     }
 
     private void saveCourse() {
+        String courseName = edtCourseName.getText().toString();
         String day = edtDay.getText().toString();
         String time = edtTime.getText().toString();
         int capacity = Integer.parseInt(edtCapacity.getText().toString());
@@ -80,7 +82,7 @@ public class AddCourseActivity extends AppCompatActivity {
         RadioButton selectedTypeButton = findViewById(selectedTypeId);
         String type = selectedTypeButton.getText().toString();
 
-        YogaCourse newCourse = new YogaCourse(day, time, capacity, duration, price, type, description);
+        YogaCourse newCourse = new YogaCourse(courseName,day, time, capacity, duration, price, type, description);
         dbHelper.insertCourse(newCourse);
 
         Toast.makeText(this, "Course added successfully", Toast.LENGTH_SHORT).show();
@@ -98,6 +100,10 @@ public class AddCourseActivity extends AppCompatActivity {
     }
 
     private boolean validateInputs() {
+        if (edtCourseName.getText().toString().isEmpty()) {
+            edtCourseName.setError("Day is required");
+            return false;
+        }
         if (edtDay.getText().toString().isEmpty()) {
             edtDay.setError("Day is required");
             return false;

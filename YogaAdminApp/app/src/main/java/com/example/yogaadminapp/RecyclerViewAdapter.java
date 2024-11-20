@@ -40,7 +40,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         YogaCourse yogaCourse = courseList.get(position);
-        holder.txtCourseName.setText(yogaCourse.getDay() + " - " + yogaCourse.getTime());
+        holder.txtCourseName.setText(yogaCourse.getName());
 
         holder.btnMore.setOnClickListener(v -> {
             Intent intent = new Intent(context, ClassListActivity.class);

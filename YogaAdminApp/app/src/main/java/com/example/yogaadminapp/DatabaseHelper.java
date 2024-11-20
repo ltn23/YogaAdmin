@@ -25,6 +25,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_PRICE = "price";
     private static final String COLUMN_TYPE = "type";
     private static final String COLUMN_DESCRIPTION = "description";
+    private static final String COLUMN_COURSE_NAME = "name";  // Course Name
+    private static final String COLUMN_CLASS_NAME = "name";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -34,6 +36,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String createCourseTable = "CREATE TABLE " + TABLE_CLASSES + " (" +
                 COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_COURSE_NAME + " TEXT, " +
                 COLUMN_DAY + " TEXT, " +
                 COLUMN_TIME + " TEXT, " +
                 COLUMN_CAPACITY + " INTEGER, " +
@@ -46,6 +49,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Tạo bảng classes
         String createClassTable = "CREATE TABLE classes (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_CLASS_NAME + " TEXT, " +
                 "teacher TEXT, " +
                 "date TEXT, " +
                 "comments TEXT, " +
@@ -58,6 +62,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void insertClass(ClassModel classModel) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put(COLUMN_CLASS_NAME, classModel.getName()); // New
         values.put("teacher", classModel.getTeacher());
         values.put("date", classModel.getDate());
         values.put("comments", classModel.getComments());
@@ -77,6 +82,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             do {
                 ClassModel classModel = new ClassModel(
                         cursor.getInt(cursor.getColumnIndexOrThrow("id")),
+                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CLASS_NAME)),
                         cursor.getString(cursor.getColumnIndexOrThrow("teacher")),
                         cursor.getString(cursor.getColumnIndexOrThrow("date")),
                         cursor.getString(cursor.getColumnIndexOrThrow("comments")),
@@ -128,6 +134,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void updateCourse(YogaCourse yogaCourse) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put(COLUMN_COURSE_NAME, yogaCourse.getName());
         values.put(COLUMN_DAY, yogaCourse.getDay());
         values.put(COLUMN_TIME, yogaCourse.getTime());
         values.put(COLUMN_CAPACITY, yogaCourse.getCapacity());
@@ -152,6 +159,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
+        values.put(COLUMN_COURSE_NAME, yogaCourse.getName()); // New
         values.put(COLUMN_DAY, yogaCourse.getDay());
         values.put(COLUMN_TIME, yogaCourse.getTime());
         values.put(COLUMN_CAPACITY, yogaCourse.getCapacity());
@@ -173,6 +181,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             do {
                 YogaCourse yogaCourse = new YogaCourse(
                         cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID)),  // Lấy id
+                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_COURSE_NAME)),
                         cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DAY)),
                         cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TIME)),
                         cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_CAPACITY)),

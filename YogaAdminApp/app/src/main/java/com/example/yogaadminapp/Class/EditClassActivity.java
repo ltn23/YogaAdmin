@@ -14,7 +14,7 @@ import com.example.yogaadminapp.R;
 
 public class EditClassActivity extends AppCompatActivity {
 
-    EditText edtTeacher, edtDate, edtComments;
+    EditText edtTeacher, edtDate, edtComments, edtCourseName;
     Button btnUpdate, btnBack, btnDelete;
     DatabaseHelper dbHelper;
     ClassModel currentClass;
@@ -79,6 +79,7 @@ public class EditClassActivity extends AppCompatActivity {
     private void updateClass() {
         currentClass = new ClassModel(
                 currentClass.getId(),
+                edtCourseName.getText().toString(),
                 edtTeacher.getText().toString(),
                 edtDate.getText().toString(),
                 edtComments.getText().toString(),

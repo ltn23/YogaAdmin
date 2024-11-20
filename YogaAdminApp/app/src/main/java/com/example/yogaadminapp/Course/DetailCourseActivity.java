@@ -15,7 +15,7 @@ import com.example.yogaadminapp.R;
 
 public class DetailCourseActivity extends AppCompatActivity {
 
-    EditText edtDay, edtTime, edtCapacity, edtDuration, edtPrice, edtDescription;
+    EditText edtDay, edtTime, edtCapacity, edtDuration, edtPrice, edtDescription, edtCourseName;
     RadioGroup rgType;
     Button btnUpdate, btnEdit, btnBack;
     DatabaseHelper dbHelper;
@@ -27,6 +27,7 @@ public class DetailCourseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail_course);
 
         // Ánh xạ các View
+        edtCourseName = findViewById(R.id.edtCourseName);
         edtDay = findViewById(R.id.edtDay);
         edtTime = findViewById(R.id.edtTime);
         edtCapacity = findViewById(R.id.edtCapacity);
@@ -37,6 +38,7 @@ public class DetailCourseActivity extends AppCompatActivity {
         btnUpdate = findViewById(R.id.btnUpdate);
         btnEdit = findViewById(R.id.btnEdit);
         btnBack = findViewById(R.id.btnBack);
+
 
         dbHelper = new DatabaseHelper(this);
 
@@ -69,6 +71,7 @@ public class DetailCourseActivity extends AppCompatActivity {
     }
 
     private void populateFields() {
+        edtCourseName.setText(currentCourse.getName());
         edtDay.setText(currentCourse.getDay());
         edtTime.setText(currentCourse.getTime());
         edtCapacity.setText(String.valueOf(currentCourse.getCapacity()));
@@ -90,6 +93,10 @@ public class DetailCourseActivity extends AppCompatActivity {
     }
 
     private boolean validateInputs() {
+        if (edtCourseName.getText().toString().isEmpty()) {
+            edtCourseName.setError("Name is required");
+            return false;
+        }
         if (edtDay.getText().toString().isEmpty()) {
             edtDay.setError("Day is required");
             return false;
@@ -118,6 +125,7 @@ public class DetailCourseActivity extends AppCompatActivity {
     }
 
     private void updateCourse() {
+        currentCourse.setName(edtCourseName.getText().toString());
         currentCourse.setDay(edtDay.getText().toString());
         currentCourse.setTime(edtTime.getText().toString());
         currentCourse.setCapacity(Integer.parseInt(edtCapacity.getText().toString()));
@@ -133,6 +141,7 @@ public class DetailCourseActivity extends AppCompatActivity {
     }
 
     private void enableEditing(boolean enable) {
+        edtCourseName.setEnabled(enable);
         edtDay.setEnabled(enable);
         edtTime.setEnabled(enable);
         edtCapacity.setEnabled(enable);

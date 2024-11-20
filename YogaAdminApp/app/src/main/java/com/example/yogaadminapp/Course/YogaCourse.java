@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class YogaCourse implements Serializable {
     private int id;
+    private String name;
     private String day;
     private String time;
     private int capacity;
@@ -12,8 +13,11 @@ public class YogaCourse implements Serializable {
     private String type;
     private String description;
 
-    public YogaCourse(int id, String day, String time, int capacity, int duration, double price, String type, String description) {
+
+
+    public YogaCourse(int id, String name, String day, String time, int capacity, int duration, double price, String type, String description) {
         this.id = id;
+        this.name = name;
         this.day = day;
         this.time = time;
         this.capacity = capacity;
@@ -23,7 +27,8 @@ public class YogaCourse implements Serializable {
         this.description = description;
     }
 
-    public YogaCourse(String day, String time, int capacity, int duration, double price, String type, String description) {
+    public YogaCourse(String name,String day, String time, int capacity, int duration, double price, String type, String description) {
+        this.name = name;
         this.day = day;
         this.time = time;
         this.capacity = capacity;
@@ -33,6 +38,13 @@ public class YogaCourse implements Serializable {
         this.description = description;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
     public int getId() {
         return id;
     }
