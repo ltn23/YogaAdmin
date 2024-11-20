@@ -11,7 +11,7 @@ import com.example.yogaadminapp.R;
 
 public class AddClassActivity extends AppCompatActivity {
 
-    EditText edtTeacher, edtDate, edtComments;
+    EditText edtTeacher, edtDate, edtComments, edtClassName;
     Button btnSaveClass, btnBack;
     DatabaseHelper dbHelper;
     int courseId;
@@ -21,6 +21,7 @@ public class AddClassActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_class);
 
+        edtClassName = findViewById(R.id.edtClassName);
         edtTeacher = findViewById(R.id.edtTeacher);
         edtDate = findViewById(R.id.edtDate);
         edtComments = findViewById(R.id.edtComments);
@@ -32,11 +33,12 @@ public class AddClassActivity extends AppCompatActivity {
 
         btnSaveClass.setOnClickListener(v -> {
             if (validateInputs()) {
+                String className = edtClassName.getText().toString();
                 String teacher = edtTeacher.getText().toString();
                 String date = edtDate.getText().toString();
                 String comments = edtComments.getText().toString();
 
-                ClassModel newClass = new ClassModel(teacher, date, comments, courseId);
+                ClassModel newClass = new ClassModel(className, teacher, date, comments, courseId);
                 dbHelper.insertClass(newClass);
 
                 Toast.makeText(AddClassActivity.this, "Class added successfully", Toast.LENGTH_SHORT).show();
@@ -50,6 +52,10 @@ public class AddClassActivity extends AppCompatActivity {
     }
 
     private boolean validateInputs() {
+        if (edtClassName.getText().toString().isEmpty()) {
+            edtClassName.setError("ClassName is required");
+            return false;
+        }
         if (edtTeacher.getText().toString().isEmpty()) {
             edtTeacher.setError("Teacher is required");
             return false;

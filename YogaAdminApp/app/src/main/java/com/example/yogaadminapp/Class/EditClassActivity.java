@@ -14,7 +14,7 @@ import com.example.yogaadminapp.R;
 
 public class EditClassActivity extends AppCompatActivity {
 
-    EditText edtTeacher, edtDate, edtComments, edtCourseName;
+    EditText edtTeacher, edtDate, edtComments, edtCourseName, edtClassName;
     Button btnUpdate, btnBack, btnDelete;
     DatabaseHelper dbHelper;
     ClassModel currentClass;
@@ -26,6 +26,7 @@ public class EditClassActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_class);
 
         // Ánh xạ các view
+        edtClassName = findViewById(R.id.edtClassName);
         edtTeacher = findViewById(R.id.edtTeacher);
         edtDate = findViewById(R.id.edtDate);
         edtComments = findViewById(R.id.edtComments);
@@ -59,12 +60,17 @@ public class EditClassActivity extends AppCompatActivity {
     }
 
     private void populateFields() {
+        edtClassName.setText(currentClass.getName());
         edtTeacher.setText(currentClass.getTeacher());
         edtDate.setText(currentClass.getDate());
         edtComments.setText(currentClass.getComments());
     }
 
     private boolean validateInputs() {
+        if (edtClassName.getText().toString().isEmpty()) {
+            edtClassName.setError("ClassName is required");
+            return false;
+        }
         if (edtTeacher.getText().toString().isEmpty()) {
             edtTeacher.setError("Teacher is required");
             return false;
@@ -79,7 +85,7 @@ public class EditClassActivity extends AppCompatActivity {
     private void updateClass() {
         currentClass = new ClassModel(
                 currentClass.getId(),
-                edtCourseName.getText().toString(),
+                edtClassName.getText().toString(),
                 edtTeacher.getText().toString(),
                 edtDate.getText().toString(),
                 edtComments.getText().toString(),
@@ -87,6 +93,7 @@ public class EditClassActivity extends AppCompatActivity {
         );
         dbHelper.updateClass(currentClass);
     }
+
 
     private void deleteClass() {
         dbHelper.deleteClass(currentClass.getId());

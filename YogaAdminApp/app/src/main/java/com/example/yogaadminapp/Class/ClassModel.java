@@ -4,11 +4,11 @@ import java.io.Serializable;
 
 public class ClassModel implements Serializable {
     private int id;
+    private String name;
     private String teacher;
     private String date;
     private String comments;
-    private String name;
-    private int courseId; // Liên kết với Course
+    private int courseId;
 
 
     public ClassModel(int id, String name, String teacher, String date, String comments, int courseId) {
@@ -20,7 +20,8 @@ public class ClassModel implements Serializable {
         this.courseId = courseId;
     }
 
-    public ClassModel(String teacher, String date, String comments, int courseId) {
+    public ClassModel(String name, String teacher, String date, String comments, int courseId) {
+        this.name = name;
         this.teacher = teacher;
         this.date = date;
         this.comments = comments;

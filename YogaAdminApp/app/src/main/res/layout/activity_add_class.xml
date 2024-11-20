@@ -6,6 +6,12 @@
     android:padding="16dp">
 
     <EditText
+        android:id="@+id/edtClassName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Class Name *"
+        android:layout_marginBottom="12dp" />
+    <EditText
         android:id="@+id/edtTeacher"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

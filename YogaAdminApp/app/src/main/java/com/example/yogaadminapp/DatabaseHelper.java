@@ -100,6 +100,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void updateClass(ClassModel classModel) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put("name", classModel.getName());
         values.put("teacher", classModel.getTeacher());
         values.put("date", classModel.getDate());
         values.put("comments", classModel.getComments());

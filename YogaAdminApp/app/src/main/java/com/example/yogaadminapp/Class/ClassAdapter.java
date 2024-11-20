@@ -40,7 +40,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ClassModel classModel = classList.get(position);
-        holder.txtClassName.setText(classModel.getTeacher() + " - " + classModel.getDate());
+        holder.txtClassName.setText(classModel.getName());
 
 // Xử lý nút Edit
         holder.btnEdit.setOnClickListener(v -> {
