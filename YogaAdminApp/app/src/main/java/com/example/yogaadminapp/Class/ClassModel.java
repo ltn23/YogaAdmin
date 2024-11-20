@@ -11,6 +11,9 @@ public class ClassModel implements Serializable {
     private int courseId;
 
 
+    public ClassModel() {
+    }
+    // Constructor đầy đủ
     public ClassModel(int id, String name, String teacher, String date, String comments, int courseId) {
         this.id = id;
         this.name = name;
