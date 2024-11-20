@@ -15,9 +15,10 @@ import com.example.yogaadminapp.R;
 public class EditClassActivity extends AppCompatActivity {
 
     EditText edtTeacher, edtDate, edtComments;
-    Button btnUpdate, btnDelete;
+    Button btnUpdate, btnBack, btnDelete;
     DatabaseHelper dbHelper;
     ClassModel currentClass;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,7 @@ public class EditClassActivity extends AppCompatActivity {
         edtDate = findViewById(R.id.edtDate);
         edtComments = findViewById(R.id.edtComments);
         btnUpdate = findViewById(R.id.btnUpdateClass);
+        btnBack = findViewById(R.id.btnBack);
 
 
         dbHelper = new DatabaseHelper(this);
@@ -48,6 +50,9 @@ public class EditClassActivity extends AppCompatActivity {
                 Toast.makeText(EditClassActivity.this, "Class updated successfully", Toast.LENGTH_SHORT).show();
                 finish();
             }
+        });
+        btnBack.setOnClickListener(v -> {
+            finish(); // Kết thúc Activity hiện tại, quay về trang trước
         });
 
 

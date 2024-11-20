@@ -12,7 +12,7 @@ import com.example.yogaadminapp.R;
 public class AddClassActivity extends AppCompatActivity {
 
     EditText edtTeacher, edtDate, edtComments;
-    Button btnSaveClass;
+    Button btnSaveClass, btnBack;
     DatabaseHelper dbHelper;
     int courseId;
 
@@ -25,6 +25,7 @@ public class AddClassActivity extends AppCompatActivity {
         edtDate = findViewById(R.id.edtDate);
         edtComments = findViewById(R.id.edtComments);
         btnSaveClass = findViewById(R.id.btnSaveClass);
+        btnBack = findViewById(R.id.btnBack);
 
         dbHelper = new DatabaseHelper(this);
         courseId = getIntent().getIntExtra("courseId", -1);
@@ -41,6 +42,10 @@ public class AddClassActivity extends AppCompatActivity {
                 Toast.makeText(AddClassActivity.this, "Class added successfully", Toast.LENGTH_SHORT).show();
                 finish();
             }
+        });
+
+        btnBack.setOnClickListener(v -> {
+            finish(); // Kết thúc Activity hiện tại, quay về trang trước
         });
     }
 

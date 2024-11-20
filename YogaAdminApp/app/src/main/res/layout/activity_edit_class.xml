@@ -31,4 +31,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Update" />
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:textStyle="bold"
+        android:backgroundTint="@android:color/holo_red_light"
+        android:textColor="@android:color/white" />
 </LinearLayout>

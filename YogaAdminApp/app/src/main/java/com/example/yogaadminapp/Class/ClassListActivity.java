@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class ClassListActivity extends AppCompatActivity {
     RecyclerView recyclerView;
-    Button btnAddClass;
+    Button btnAddClass, btnBack;
     DatabaseHelper dbHelper;
     ClassAdapter adapter;
     ArrayList<ClassModel> classList;
@@ -29,6 +29,7 @@ public class ClassListActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerViewClasses);
         btnAddClass = findViewById(R.id.btnAddClass);
+        btnBack = findViewById(R.id.btnBack);
         dbHelper = new DatabaseHelper(this);
 
         courseId = getIntent().getIntExtra("courseId", -1);
@@ -46,6 +47,9 @@ public class ClassListActivity extends AppCompatActivity {
             Intent intent = new Intent(ClassListActivity.this, AddClassActivity.class);
             intent.putExtra("courseId", courseId);
             startActivity(intent);
+        });
+        btnBack.setOnClickListener(v -> {
+            finish();
         });
     }
 

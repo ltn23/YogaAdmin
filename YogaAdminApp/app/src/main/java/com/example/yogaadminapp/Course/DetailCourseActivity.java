@@ -17,7 +17,7 @@ public class DetailCourseActivity extends AppCompatActivity {
 
     EditText edtDay, edtTime, edtCapacity, edtDuration, edtPrice, edtDescription;
     RadioGroup rgType;
-    Button btnUpdate, btnEdit;
+    Button btnUpdate, btnEdit, btnBack;
     DatabaseHelper dbHelper;
     YogaCourse currentCourse;
 
@@ -36,6 +36,7 @@ public class DetailCourseActivity extends AppCompatActivity {
         rgType = findViewById(R.id.rgType);
         btnUpdate = findViewById(R.id.btnUpdate);
         btnEdit = findViewById(R.id.btnEdit);
+        btnBack = findViewById(R.id.btnBack);
 
         dbHelper = new DatabaseHelper(this);
 
@@ -57,6 +58,10 @@ public class DetailCourseActivity extends AppCompatActivity {
                 Toast.makeText(DetailCourseActivity.this, "Course updated successfully", Toast.LENGTH_SHORT).show();
                 finish();
             }
+        });
+
+        btnBack.setOnClickListener(v -> {
+            finish(); // Kết thúc Activity hiện tại, quay về trang trước
         });
 
         // Ban đầu chế độ chỉnh sửa sẽ tắt
