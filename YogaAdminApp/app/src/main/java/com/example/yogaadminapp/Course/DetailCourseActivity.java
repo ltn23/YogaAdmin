@@ -7,15 +7,24 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.yogaadminapp.DatabaseHelper;
 import com.example.yogaadminapp.R;
 
+import java.util.Calendar;
+
+import android.app.TimePickerDialog;
+import android.widget.ArrayAdapter;
+import android.widget.TimePicker;
+
 public class DetailCourseActivity extends AppCompatActivity {
 
-    EditText edtDay, edtTime, edtCapacity, edtDuration, edtPrice, edtDescription, edtCourseName;
+    EditText edtStartTime, edtEndTime, edtCapacity, edtDuration, edtPrice, edtDescription, edtCourseName;
+    Spinner spinnerDay;
     RadioGroup rgType;
     Button btnUpdate, btnEdit, btnBack;
     DatabaseHelper dbHelper;
@@ -28,8 +37,9 @@ public class DetailCourseActivity extends AppCompatActivity {
 
         // Ánh xạ các View
         edtCourseName = findViewById(R.id.edtCourseName);
-        edtDay = findViewById(R.id.edtDay);
-        edtTime = findViewById(R.id.edtTime);
+        spinnerDay = findViewById(R.id.spinnerDay);
+        edtStartTime = findViewById(R.id.edtStartTime);
+        edtEndTime = findViewById(R.id.edtEndTime);
         edtCapacity = findViewById(R.id.edtCapacity);
         edtDuration = findViewById(R.id.edtDuration);
         edtPrice = findViewById(R.id.edtPrice);
@@ -39,8 +49,10 @@ public class DetailCourseActivity extends AppCompatActivity {
         btnEdit = findViewById(R.id.btnEdit);
         btnBack = findViewById(R.id.btnBack);
 
-
         dbHelper = new DatabaseHelper(this);
+
+        // Khởi tạo Adapter cho Spinner trước khi populateFields được gọi
+        setupDaySpinner();
 
         // Nhận dữ liệu lớp học từ Intent
         Intent intent = getIntent();
@@ -50,10 +62,7 @@ public class DetailCourseActivity extends AppCompatActivity {
             populateFields();  // Hiển thị thông tin lớp học
         }
 
-        // Nút Edit để bật chế độ chỉnh sửa
         btnEdit.setOnClickListener(v -> enableEditing(true));
-
-        // Nút Update để lưu thông tin cập nhật
         btnUpdate.setOnClickListener(v -> {
             if (validateInputs()) {
                 updateCourse();
@@ -62,18 +71,40 @@ public class DetailCourseActivity extends AppCompatActivity {
             }
         });
 
-        btnBack.setOnClickListener(v -> {
-            finish(); // Kết thúc Activity hiện tại, quay về trang trước
-        });
+        btnBack.setOnClickListener(v -> finish());
 
-        // Ban đầu chế độ chỉnh sửa sẽ tắt
+        edtStartTime.setOnClickListener(v -> showTimePickerDialog(edtStartTime));
+        edtEndTime.setOnClickListener(v -> showTimePickerDialog(edtEndTime));
+
         enableEditing(false);
+    }
+
+    private void setupDaySpinner() {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.days_of_week, // Đảm bảo mảng được định nghĩa trong strings.xml
+                android.R.layout.simple_spinner_item
+        );
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerDay.setAdapter(adapter);
     }
 
     private void populateFields() {
         edtCourseName.setText(currentCourse.getName());
-        edtDay.setText(currentCourse.getDay());
-        edtTime.setText(currentCourse.getTime());
+
+        // Kiểm tra và đặt Adapter cho Spinner
+        ArrayAdapter<CharSequence> adapter = (ArrayAdapter<CharSequence>) spinnerDay.getAdapter();
+        if (adapter != null) {
+            int position = adapter.getPosition(currentCourse.getDay());
+            spinnerDay.setSelection(position);
+        }
+
+        String[] times = currentCourse.getTime().split(" - ");
+        if (times.length == 2) {
+            edtStartTime.setText(times[0]);
+            edtEndTime.setText(times[1]);
+        }
+
         edtCapacity.setText(String.valueOf(currentCourse.getCapacity()));
         edtDuration.setText(String.valueOf(currentCourse.getDuration()));
         edtPrice.setText(String.valueOf(currentCourse.getPrice()));
@@ -92,25 +123,75 @@ public class DetailCourseActivity extends AppCompatActivity {
         }
     }
 
+
+    private void showTimePickerDialog(EditText editText) {
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(
+                this,
+                (TimePicker view, int selectedHour, int selectedMinute) -> {
+                    String time = String.format("%02d:%02d", selectedHour, selectedMinute);
+                    editText.setText(time);
+
+                    if (!edtStartTime.getText().toString().isEmpty() && !edtEndTime.getText().toString().isEmpty()) {
+                        calculateDuration();
+                    }
+                },
+                hour,
+                minute,
+                true
+        );
+        timePickerDialog.show();
+    }
+
+    private void calculateDuration() {
+        String startTime = edtStartTime.getText().toString();
+        String endTime = edtEndTime.getText().toString();
+
+        String[] startParts = startTime.split(":");
+        String[] endParts = endTime.split(":");
+
+        int startHour = Integer.parseInt(startParts[0]);
+        int startMinute = Integer.parseInt(startParts[1]);
+        int endHour = Integer.parseInt(endParts[0]);
+        int endMinute = Integer.parseInt(endParts[1]);
+
+        int startTotalMinutes = startHour * 60 + startMinute;
+        int endTotalMinutes = endHour * 60 + endMinute;
+
+        int duration = endTotalMinutes - startTotalMinutes;
+
+        if (duration < 0) {
+            Toast.makeText(this, "End Time must be after Start Time", Toast.LENGTH_SHORT).show();
+            edtEndTime.setError("Invalid End Time");
+        } else {
+            edtDuration.setText(String.valueOf(duration)); // Hiển thị Duration dưới dạng phút
+        }
+    }
+
+
+
     private boolean validateInputs() {
         if (edtCourseName.getText().toString().isEmpty()) {
-            edtCourseName.setError("Name is required");
+            edtCourseName.setError("Course Name is required");
             return false;
         }
-        if (edtDay.getText().toString().isEmpty()) {
-            edtDay.setError("Day is required");
+        if (spinnerDay.getSelectedItem() == null) {
+            Toast.makeText(this, "Please select a day of the week", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (edtTime.getText().toString().isEmpty()) {
-            edtTime.setError("Time is required");
+        if (edtStartTime.getText().toString().isEmpty()) {
+            edtStartTime.setError("Start Time is required");
+            return false;
+        }
+        if (edtEndTime.getText().toString().isEmpty()) {
+            edtEndTime.setError("End Time is required");
             return false;
         }
         if (edtCapacity.getText().toString().isEmpty()) {
             edtCapacity.setError("Capacity is required");
-            return false;
-        }
-        if (edtDuration.getText().toString().isEmpty()) {
-            edtDuration.setError("Duration is required");
             return false;
         }
         if (edtPrice.getText().toString().isEmpty()) {
@@ -118,16 +199,22 @@ public class DetailCourseActivity extends AppCompatActivity {
             return false;
         }
         if (rgType.getCheckedRadioButtonId() == -1) {
-            Toast.makeText(this, "Please select a type of Course", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please select a type of course", Toast.LENGTH_SHORT).show();
             return false;
         }
+
+        if (edtDuration.getText().toString().isEmpty() || Integer.parseInt(edtDuration.getText().toString()) <= 0) {
+            Toast.makeText(this, "Invalid Duration", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
         return true;
     }
 
     private void updateCourse() {
         currentCourse.setName(edtCourseName.getText().toString());
-        currentCourse.setDay(edtDay.getText().toString());
-        currentCourse.setTime(edtTime.getText().toString());
+        currentCourse.setDay(spinnerDay.getSelectedItem().toString());
+        currentCourse.setTime(edtStartTime.getText().toString() + " - " + edtEndTime.getText().toString());
         currentCourse.setCapacity(Integer.parseInt(edtCapacity.getText().toString()));
         currentCourse.setDuration(Integer.parseInt(edtDuration.getText().toString()));
         currentCourse.setPrice(Double.parseDouble(edtPrice.getText().toString()));
@@ -142,8 +229,9 @@ public class DetailCourseActivity extends AppCompatActivity {
 
     private void enableEditing(boolean enable) {
         edtCourseName.setEnabled(enable);
-        edtDay.setEnabled(enable);
-        edtTime.setEnabled(enable);
+        spinnerDay.setEnabled(enable);
+        edtStartTime.setEnabled(enable);
+        edtEndTime.setEnabled(enable);
         edtCapacity.setEnabled(enable);
         edtDuration.setEnabled(enable);
         edtPrice.setEnabled(enable);

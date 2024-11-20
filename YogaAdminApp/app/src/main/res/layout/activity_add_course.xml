@@ -24,54 +24,132 @@
                 android:textSize="24sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="16dp" />
-            <EditText
-                android:id="@+id/edtCourseName"
+
+            <!-- Course Name -->
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Course Name *"
+                android:text="Course Name *"
+                android:layout_marginBottom="12dp" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:hint="abcd *"
+                android:layout_marginBottom="12dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtCourseName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <!-- Day of the Week -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Day of the week *"
+                android:layout_marginBottom="12dp" />
+
+            <Spinner
+                android:id="@+id/spinnerDay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp" />
 
 
-            <EditText
-                android:id="@+id/edtDay"
+            <!-- Time of Course -->
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Day of the week *"
-                android:inputType="text"
+                android:text="Time of Course  *"
                 android:layout_marginBottom="12dp" />
-
-            <EditText
-                android:id="@+id/edtTime"
+            <!-- Time of Course -->
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Time of course *"
-                android:inputType="time"
-                android:layout_marginBottom="12dp" />
+                android:text="Start Time *"
+                android:layout_marginBottom="8dp" />
 
-            <EditText
-                android:id="@+id/edtCapacity"
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtStartTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:hint="Select Start Time" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="End Time *"
+                android:layout_marginBottom="8dp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtEndTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:hint="Select End Time" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <!-- Capacity -->
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Capacity *"
-                android:inputType="number"
-                android:layout_marginBottom="12dp" />
+                android:layout_marginBottom="12dp">
 
-            <EditText
-                android:id="@+id/edtDuration"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtCapacity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Duration -->
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Duration *"
-                android:inputType="number"
-                android:layout_marginBottom="12dp" />
+                android:layout_marginBottom="12dp">
 
-            <EditText
-                android:id="@+id/edtPrice"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtDuration"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Price per Class -->
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Price per class *"
-                android:inputType="numberDecimal"
-                android:layout_marginBottom="12dp" />
+                android:layout_marginBottom="12dp">
 
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Type of Class -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -104,13 +182,20 @@
                     android:text="Family Yoga" />
             </RadioGroup>
 
-            <EditText
-                android:id="@+id/edtDescription"
+            <!-- Description -->
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Description (Optional)"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="16dp">
 
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Save Button -->
             <Button
                 android:id="@+id/btnSave"
                 android:layout_width="match_parent"
@@ -121,6 +206,7 @@
         </LinearLayout>
     </ScrollView>
 
+    <!-- Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
