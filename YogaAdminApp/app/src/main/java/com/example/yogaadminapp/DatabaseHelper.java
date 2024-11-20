@@ -45,16 +45,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public void insertClassToFirebase(ClassModel classModel) {
-        String id = firebaseDb.push().getKey(); // Tạo key ngẫu nhiên
-        firebaseDb.child(id).setValue(classModel); // Lưu đối tượng vào Firebase
-    }
+//    public void insertClassToFirebase(ClassModel classModel) {
+//        String id = firebaseDb.push().getKey(); // Tạo key ngẫu nhiên
+//        firebaseDb.child(id).setValue(classModel); // Lưu đối tượng vào Firebase
+//    }
 
     public void syncFromFirebase() {
         if (firebaseDb == null) {
             Log.e("DatabaseHelper", "Firebase Database reference is null. Initialization failed.");
             return;
         }
+
+        // Xóa dữ liệu cũ trong SQLite trước khi đồng bộ
+        deleteAllClasses();
 
         firebaseDb.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -66,14 +69,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         ClassModel classModel = child.getValue(ClassModel.class);
 
                         if (classModel != null) {
+                            String firebaseId = child.getKey(); // Lấy ID từ Firebase
                             ContentValues values = new ContentValues();
+                            values.put("firebaseId", firebaseId);
                             values.put("name", classModel.getName());
                             values.put("teacher", classModel.getTeacher());
                             values.put("date", classModel.getDate());
                             values.put("comments", classModel.getComments());
                             values.put("courseId", classModel.getCourseId());
 
-                            db.insert("classes", null, values);
+                            db.insert("classes", null, values); // Chèn dữ liệu vào SQLite
                         }
                     }
                     db.setTransactionSuccessful();
@@ -88,6 +93,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
         });
     }
+    public void deleteAllClasses() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM classes"); // Xóa tất cả dữ liệu trong bảng classes
+        db.close();
+    }
+
+
 
 
     @Override
@@ -107,6 +119,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Tạo bảng classes
         String createClassTable = "CREATE TABLE classes (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "firebaseId TEXT UNIQUE, " +
                 COLUMN_CLASS_NAME + " TEXT, " +
                 "teacher TEXT, " +
                 "date TEXT, " +
@@ -126,10 +139,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("comments", classModel.getComments());
         values.put("courseId", classModel.getCourseId());
 
-        db.insert("classes", null, values);
+        long newId = db.insert("classes", null, values);
         db.close();
 
-        insertClassToFirebase(classModel);
+        // Lưu vào Firebase và cập nhật ID
+        if (newId != -1) { // Nếu thêm thành công
+            classModel.setId((int) newId); // Gán ID cho ClassModel
+
+            // Lưu vào Firebase
+            String firebaseId = firebaseDb.push().getKey();
+            if (firebaseId != null) {
+                firebaseDb.child(firebaseId).setValue(classModel);
+            }
+        }
+//        insertClassToFirebase(classModel);
     }
 
     public ArrayList<ClassModel> getClassesByCourse(int courseId) {
@@ -142,7 +165,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             do {
                 ClassModel classModel = new ClassModel(
                         cursor.getInt(cursor.getColumnIndexOrThrow("id")),
-                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CLASS_NAME)),
+                        cursor.getString(cursor.getColumnIndexOrThrow("name")),
                         cursor.getString(cursor.getColumnIndexOrThrow("teacher")),
                         cursor.getString(cursor.getColumnIndexOrThrow("date")),
                         cursor.getString(cursor.getColumnIndexOrThrow("comments")),
@@ -157,6 +180,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
+
+
     public void updateClass(ClassModel classModel) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -167,12 +192,42 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.update("classes", values, "id = ?", new String[]{String.valueOf(classModel.getId())});
         db.close();
+        // Đồng bộ cập nhật với Firebase
+        firebaseDb.orderByChild("id").equalTo(classModel.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                for (DataSnapshot child : snapshot.getChildren()) {
+                    // Cập nhật object trên Firebase
+                    child.getRef().setValue(classModel);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Log.e("FirebaseUpdate", "Error: " + error.getMessage());
+            }
+        });
     }
 
     public void deleteClass(int classId) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete("classes", "id = ?", new String[]{String.valueOf(classId)});
-        db.close();
+
+        // Đồng bộ xóa với Firebase
+        firebaseDb.orderByChild("id").equalTo(classId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                for (DataSnapshot child : snapshot.getChildren()) {
+                    // Xóa object trên Firebase
+                    child.getRef().removeValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Log.e("FirebaseDelete", "Error: " + error.getMessage());
+            }
+        });
     }
 
 
@@ -328,6 +383,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         db.close();
         return classList;
+    }
+
+    private boolean isFirebaseIdExist(String firebaseId) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.query(
+                "classes",
+                new String[]{"firebaseId"},
+                "firebaseId = ?",
+                new String[]{firebaseId},
+                null,
+                null,
+                null
+        );
+        boolean exists = cursor.getCount() > 0;
+        cursor.close();
+        return exists;
     }
 
 

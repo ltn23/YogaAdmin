@@ -9,6 +9,7 @@ public class ClassModel implements Serializable {
     private String date;
     private String comments;
     private int courseId;
+    private String firebaseId;
 
 
     public ClassModel() {
@@ -31,6 +32,14 @@ public class ClassModel implements Serializable {
         this.courseId = courseId;
     }
 
+    // Các getter và setter, thêm getter/setter cho firebaseId
+    public String getFirebaseId() {
+        return firebaseId;
+    }
+
+    public void setFirebaseId(String firebaseId) {
+        this.firebaseId = firebaseId;
+    }
     public String getName() {
         return name;
     }
@@ -40,6 +49,9 @@ public class ClassModel implements Serializable {
     }
     public int getId() {
         return id;
+    }
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTeacher() {
