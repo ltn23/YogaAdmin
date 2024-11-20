@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.yogaadminapp.Course.AddCourseActivity;
 import com.example.yogaadminapp.Course.YogaCourse;
+import com.example.yogaadminapp.Search.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -48,13 +49,18 @@ public class MainActivity extends AppCompatActivity {
         // Xử lý Bottom Navigation
         bottomNavigationView.setOnItemSelectedListener(item -> {
             Map<Integer, Runnable> actions = new HashMap<>();
-            actions.put(R.id.nav_home, () -> {
-                Toast.makeText(MainActivity.this, "Already on Home Screen", Toast.LENGTH_SHORT).show();
-            });
             actions.put(R.id.nav_add, () -> {
                 Intent intent = new Intent(MainActivity.this, AddCourseActivity.class);
                 startActivity(intent);
             });
+            actions.put(R.id.nav_home, () -> {
+                Toast.makeText(MainActivity.this, "Already on Home Screen", Toast.LENGTH_SHORT).show();
+            });
+            actions.put(R.id.nav_search, () -> {
+                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                startActivity(intent);
+            });
+
 
             Runnable action = actions.get(item.getItemId());
             if (action != null) {

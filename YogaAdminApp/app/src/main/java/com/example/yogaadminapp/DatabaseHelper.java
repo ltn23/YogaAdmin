@@ -198,4 +198,75 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return courseList;
     }
+
+    public ArrayList<ClassModel> getClassesByTeacher(String teacherName) {
+        ArrayList<ClassModel> classList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query("classes", null, "teacher LIKE ?", new String[]{"%" + teacherName + "%"}, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                ClassModel classModel = new ClassModel(
+                        cursor.getInt(cursor.getColumnIndexOrThrow("id")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("name")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("teacher")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("date")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("comments")),
+                        cursor.getInt(cursor.getColumnIndexOrThrow("courseId"))
+                );
+                classList.add(classModel);
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+        db.close();
+        return classList;
+    }
+
+    public ArrayList<ClassModel> getClassesByDate(String date) {
+        ArrayList<ClassModel> classList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query("classes", null, "date = ?", new String[]{date}, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                ClassModel classModel = new ClassModel(
+                        cursor.getInt(cursor.getColumnIndexOrThrow("id")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("name")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("teacher")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("date")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("comments")),
+                        cursor.getInt(cursor.getColumnIndexOrThrow("courseId"))
+                );
+                classList.add(classModel);
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+        db.close();
+        return classList;
+    }
+    public ArrayList<ClassModel> getClassesByTeacherAndDate(String teacherName, String date) {
+        ArrayList<ClassModel> classList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query("classes", null, "teacher LIKE ? AND date = ?",
+                new String[]{"%" + teacherName + "%", date}, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                ClassModel classModel = new ClassModel(
+                        cursor.getInt(cursor.getColumnIndexOrThrow("id")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("name")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("teacher")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("date")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("comments")),
+                        cursor.getInt(cursor.getColumnIndexOrThrow("courseId"))
+                );
+                classList.add(classModel);
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+        db.close();
+        return classList;
+    }
+
+
 }

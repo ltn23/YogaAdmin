@@ -44,6 +44,10 @@
         <activity
             android:name=".Class.EditClassActivity"
         />
+        <activity
+            android:name=".Search.SearchActivity"
+            android:exported="false">
+        </activity>
     </application>
 
 
