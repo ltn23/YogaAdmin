@@ -42,14 +42,26 @@ public class ClassModel implements Serializable {
     public String getTeacher() {
         return teacher;
     }
+    public void setTeacher(String teacher) {
+        this.teacher = teacher;
+    }
+
 
     public String getDate() {
         return date;
     }
+    public void setDate(String date) {
+        this.date = date;
+    }
+
 
     public String getComments() {
         return comments;
     }
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
 
     public int getCourseId() {
         return courseId;

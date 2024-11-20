@@ -1,5 +1,6 @@
 package com.example.yogaadminapp.Class;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -8,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.yogaadminapp.DatabaseHelper;
 import com.example.yogaadminapp.R;
+
+import java.util.Calendar;
 
 public class AddClassActivity extends AppCompatActivity {
 
@@ -31,6 +34,9 @@ public class AddClassActivity extends AppCompatActivity {
         dbHelper = new DatabaseHelper(this);
         courseId = getIntent().getIntExtra("courseId", -1);
 
+        // Show DatePickerDialog on date field click
+        edtDate.setOnClickListener(v -> showDatePickerDialog());
+
         btnSaveClass.setOnClickListener(v -> {
             if (validateInputs()) {
                 String className = edtClassName.getText().toString();
@@ -51,9 +57,28 @@ public class AddClassActivity extends AppCompatActivity {
         });
     }
 
+    private void showDatePickerDialog() {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                this,
+                (view, selectedYear, selectedMonth, selectedDay) -> {
+                    String date = selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear;
+                    edtDate.setText(date);
+                },
+                year,
+                month,
+                day
+        );
+        datePickerDialog.show();
+    }
+
     private boolean validateInputs() {
         if (edtClassName.getText().toString().isEmpty()) {
-            edtClassName.setError("ClassName is required");
+            edtClassName.setError("Class Name is required");
             return false;
         }
         if (edtTeacher.getText().toString().isEmpty()) {

@@ -1,54 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:padding="16dp">
 
-    <EditText
-        android:id="@+id/edtClassName"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Class Name *"
-        android:layout_marginBottom="12dp" />
-    <EditText
-        android:id="@+id/edtTeacher"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Teacher"
-        android:layout_marginBottom="8dp" />
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/edtDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Date"
-        android:layout_marginBottom="8dp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add New Class"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
 
-    <EditText
-        android:id="@+id/edtComments"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Comments (Optional)"
-        android:layout_marginBottom="16dp" />
+        <!-- Class Name -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Class Name *"
+            android:layout_marginBottom="12dp" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:hint="Class Name *">
 
-    <Button
-        android:id="@+id/btnSaveClass"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Save Class"
-        android:textStyle="bold"
-        android:backgroundTint="@android:color/holo_blue_dark"
-        android:textColor="@android:color/white"
-        android:layout_marginBottom="8dp" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtClassName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/btnBack"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Back"
-        android:textStyle="bold"
-        android:backgroundTint="@android:color/holo_red_light"
-        android:textColor="@android:color/white" />
+        <!-- Teacher -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Teacher *"
+            android:layout_marginBottom="12dp" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:hint="Teacher *">
 
-</LinearLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtTeacher"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Date -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Date *"
+            android:layout_marginBottom="12dp" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:hint="Date *">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:clickable="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Comments -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Comments *"
+            android:layout_marginBottom="12dp" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="Comments (Optional)">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtComments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Save Button -->
+        <Button
+            android:id="@+id/btnSaveClass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save Class"
+            android:textStyle="bold"
+            android:backgroundTint="@android:color/holo_blue_dark"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Back Button -->
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:textStyle="bold"
+            android:backgroundTint="@android:color/holo_red_light"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+</ScrollView>
