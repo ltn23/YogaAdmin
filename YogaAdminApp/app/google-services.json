@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "641764453522",
+    "project_id": "yogaadminapp-f41e8",
+    "storage_bucket": "yogaadminapp-f41e8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:641764453522:android:4452d144633cb966c60a4b",
+        "android_client_info": {
+          "package_name": "com.example.yogaadminapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBD1BOiRFaoz_dRhXEJ_qQuYX8bfu9v67Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

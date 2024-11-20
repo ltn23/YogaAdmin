@@ -2,6 +2,7 @@ package com.example.yogaadminapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -83,7 +84,18 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "All courses deleted", Toast.LENGTH_SHORT).show();
         });
 
+        syncDataFromFirebase();
+
         loadCourses();
+    }
+
+    private void syncDataFromFirebase() {
+        if (dbHelper != null) {
+            dbHelper.syncFromFirebase();
+            Toast.makeText(this, "Data synced from Firebase", Toast.LENGTH_SHORT).show();
+        } else {
+            Log.e("MainActivity", "DatabaseHelper is null, cannot sync from Firebase.");
+        }
     }
 
     @Override

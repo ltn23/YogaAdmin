@@ -5,14 +5,23 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.example.yogaadminapp.Class.ClassModel;
 import com.example.yogaadminapp.Course.YogaCourse;
 
 import java.util.ArrayList;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 
+
+    private DatabaseReference firebaseDb;
     private static final String DATABASE_NAME = "yoga.db";
     private static final int DATABASE_VERSION = 2;
 
@@ -30,7 +39,56 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        firebaseDb = FirebaseDatabase
+                .getInstance("https://yogaadminapp-f41e8-default-rtdb.europe-west1.firebasedatabase.app/")
+                .getReference("classes");
     }
+
+
+    public void insertClassToFirebase(ClassModel classModel) {
+        String id = firebaseDb.push().getKey(); // Tạo key ngẫu nhiên
+        firebaseDb.child(id).setValue(classModel); // Lưu đối tượng vào Firebase
+    }
+
+    public void syncFromFirebase() {
+        if (firebaseDb == null) {
+            Log.e("DatabaseHelper", "Firebase Database reference is null. Initialization failed.");
+            return;
+        }
+
+        firebaseDb.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                SQLiteDatabase db = getWritableDatabase();
+                db.beginTransaction();
+                try {
+                    for (DataSnapshot child : snapshot.getChildren()) {
+                        ClassModel classModel = child.getValue(ClassModel.class);
+
+                        if (classModel != null) {
+                            ContentValues values = new ContentValues();
+                            values.put("name", classModel.getName());
+                            values.put("teacher", classModel.getTeacher());
+                            values.put("date", classModel.getDate());
+                            values.put("comments", classModel.getComments());
+                            values.put("courseId", classModel.getCourseId());
+
+                            db.insert("classes", null, values);
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Log.e("FirebaseSync", "Error: " + error.getMessage());
+            }
+        });
+    }
+
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -54,7 +112,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "date TEXT, " +
                 "comments TEXT, " +
                 "courseId INTEGER, " +
-                "FOREIGN KEY(courseId) REFERENCES courses(id))";
+                "FOREIGN KEY(courseId) REFERENCES courses(id) ON DELETE CASCADE)";
         db.execSQL(createClassTable);
     }
 
@@ -70,6 +128,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.insert("classes", null, values);
         db.close();
+
+        insertClassToFirebase(classModel);
     }
 
     public ArrayList<ClassModel> getClassesByCourse(int courseId) {
@@ -173,6 +233,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+
+    
     public ArrayList<YogaCourse> getAllCourses() {
         ArrayList<YogaCourse> courseList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();

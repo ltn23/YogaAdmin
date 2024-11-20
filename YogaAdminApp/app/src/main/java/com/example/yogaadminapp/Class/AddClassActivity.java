@@ -47,10 +47,11 @@ public class AddClassActivity extends AppCompatActivity {
                 ClassModel newClass = new ClassModel(className, teacher, date, comments, courseId);
                 dbHelper.insertClass(newClass);
 
-                Toast.makeText(AddClassActivity.this, "Class added successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddClassActivity.this, "Class added and synced successfully", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
+
 
         btnBack.setOnClickListener(v -> {
             finish(); // Kết thúc Activity hiện tại, quay về trang trước
