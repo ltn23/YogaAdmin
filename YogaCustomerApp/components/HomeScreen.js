@@ -29,7 +29,7 @@ const HomeScreen = ({ navigation }) => {
             ...data[key],
           }));
           setDataClass(classArray);
-          setFilteredClasses(classArray); // Initialize filtered list
+          setFilteredClasses(classArray); // Khởi tạo danh sách lớp được lọc
         }
         setLoading(false);
       },
@@ -44,14 +44,17 @@ const HomeScreen = ({ navigation }) => {
 
   const handleSearch = (text) => {
     setSearchQuery(text);
+
+    // Lọc danh sách lớp dựa trên từ khóa tìm kiếm
     if (text.trim() === "") {
-      setFilteredClasses(dataClass); // Show all classes if search is empty
+      setFilteredClasses(dataClass); // Hiển thị tất cả nếu tìm kiếm trống
     } else {
       const lowercasedQuery = text.toLowerCase();
       const filtered = dataClass.filter(
         (item) =>
-          item.date.toLowerCase().includes(lowercasedQuery) || // Match by date
-          (item.time && item.time.toLowerCase().includes(lowercasedQuery)) // Match by time if available
+          item.name.toLowerCase().includes(lowercasedQuery) || // Tìm theo tên lớp
+          item.teacher.toLowerCase().includes(lowercasedQuery) || // Tìm theo tên giáo viên
+          item.date.toLowerCase().includes(lowercasedQuery) // Tìm theo ngày tổ chức
       );
       setFilteredClasses(filtered);
     }
@@ -70,7 +73,6 @@ const HomeScreen = ({ navigation }) => {
                 name: item.name,
                 teacher: item.teacher,
                 date: item.date,
-                time: item.time, // Assuming time is available
                 comments: item.comments,
               })
             }
@@ -86,10 +88,10 @@ const HomeScreen = ({ navigation }) => {
     <View style={styles.container}>
       <Text style={styles.header}>Classes Information</Text>
 
-      {/* Search Bar */}
+      {/* Thanh tìm kiếm */}
       <TextInput
         style={styles.searchBar}
-        placeholder="Search by day or time..."
+        placeholder="Search by class name, teacher, or date..."
         value={searchQuery}
         onChangeText={handleSearch}
       />
