@@ -5,33 +5,33 @@ import {
   View,
   FlatList,
   TouchableOpacity,
+  TextInput,
 } from "react-native";
-import { database } from "../firebaseConfig"; // Import your Firebase config
+import { database } from "../firebaseConfig";
 import { ref, onValue } from "firebase/database";
 
 const HomeScreen = ({ navigation }) => {
-
   const [dataClass, setDataClass] = useState([]);
+  const [filteredClasses, setFilteredClasses] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Reference to your database path
     const classRef = ref(database, "classes");
 
-    // Fetch data from Firebase Realtime Database
     const unsubscribe = onValue(
       classRef,
       (snapshot) => {
         const data = snapshot.val();
         if (data) {
-          // Convert object to an array and set to state
           const classArray = Object.keys(data).map((key) => ({
             id: key,
             ...data[key],
           }));
           setDataClass(classArray);
+          setFilteredClasses(classArray); // Initialize filtered list
         }
-        setLoading(false); // Stop loading
+        setLoading(false);
       },
       (error) => {
         console.error("Error fetching data:", error);
@@ -39,9 +39,24 @@ const HomeScreen = ({ navigation }) => {
       }
     );
 
-    // Cleanup subscription on unmount
     return () => unsubscribe();
   }, []);
+
+  const handleSearch = (text) => {
+    setSearchQuery(text);
+    if (text.trim() === "") {
+      setFilteredClasses(dataClass); // Show all classes if search is empty
+    } else {
+      const lowercasedQuery = text.toLowerCase();
+      const filtered = dataClass.filter(
+        (item) =>
+          item.date.toLowerCase().includes(lowercasedQuery) || // Match by date
+          (item.time && item.time.toLowerCase().includes(lowercasedQuery)) // Match by time if available
+      );
+      setFilteredClasses(filtered);
+    }
+  };
+
   const renderClassItem = ({ item }) => {
     return (
       <View style={styles.card}>
@@ -55,6 +70,7 @@ const HomeScreen = ({ navigation }) => {
                 name: item.name,
                 teacher: item.teacher,
                 date: item.date,
+                time: item.time, // Assuming time is available
                 comments: item.comments,
               })
             }
@@ -69,10 +85,20 @@ const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Classes Information</Text>
+
+      {/* Search Bar */}
+      <TextInput
+        style={styles.searchBar}
+        placeholder="Search by day or time..."
+        value={searchQuery}
+        onChangeText={handleSearch}
+      />
+
       <FlatList
-        data={dataClass}
+        data={filteredClasses}
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderClassItem}
+        ListEmptyComponent={<Text style={styles.noResults}>No classes found.</Text>}
       />
     </View>
   );
@@ -89,6 +115,16 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 20,
     textAlign: "center",
+  },
+  searchBar: {
+    backgroundColor: "#f2f2f2",
+    borderRadius: 8,
+    padding: 10,
+    fontSize: 16,
+    color: "#333",
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: "#ddd",
   },
   card: {
     backgroundColor: "#f1f1f1",
@@ -111,11 +147,11 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 18,
     fontWeight: "500",
-    flex: 1, // Ensures text occupies available space
+    flex: 1,
     color: "#333",
   },
   button: {
-    backgroundColor: "#28a745", // Green color as shown in the image
+    backgroundColor: "#28a745",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
@@ -126,6 +162,11 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 14,
     fontWeight: "bold",
+  },
+  noResults: {
+    textAlign: "center",
+    marginTop: 20,
+    color: "#999",
   },
 });
 
